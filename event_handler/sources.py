@@ -110,6 +110,15 @@ def simple_token_verification(token, body):
 
     return secret.decode() == token
 
+def azure_devops_token_verification(token, body):
+    """
+    Verifies that the token received from the event is accurate
+    """
+    if not token:
+        raise Exception("Token is empty")
+
+    secret = get_secret(PROJECT_NAME, "event-handler", "latest")
+    return secret.decode() == token
 
 def get_secret(project_name, secret_name, version_num):
     """
@@ -145,6 +154,9 @@ def get_source(headers):
     if "X-Pagerduty-Signature" in headers:
         return "pagerduty"
 
+    if "X-Vss-Subscriptionid" in headers:
+        return "azure-devops"
+
     return headers.get("User-Agent")
 
 
@@ -164,4 +176,7 @@ AUTHORIZED_SOURCES = {
     "pagerduty": EventSource(
         "X-Pagerduty-Signature", pagerduty_verification
         ),
+    "azure-devops": EventSource(
+        "Access-Token", azure_devops_token_verification
+        )
 }
