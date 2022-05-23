@@ -62,9 +62,9 @@ deploys_circleci AS (# CircleCI pipelines
   WHERE (source = "circleci" AND event_type = "workflow-completed" AND JSON_EXTRACT_SCALAR(metadata, '$.workflow.name') LIKE "%deploy%" AND JSON_EXTRACT_SCALAR(metadata, '$.workflow.status') = "success")
 ),
 
-deploys_azure_devops AS (# Azure Devops Pipelines
+# deploys_azure_devops AS (# Azure Devops Pipelines
   # TODO Build Azure Devops Deployment Filter Query
-),
+# ),
 
 deploys AS (
   SELECT * FROM
