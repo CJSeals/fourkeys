@@ -59,9 +59,9 @@ def index():
 
 def process_azure_devops_event(msg):
     supportedEventTypes = {
-        "git.push",
-        "build.complete"
-        "git.pullrequest.merged",
+        "git.push",                                  # Push to Master
+        "git.pullrequest.merged",                    # Merge to Master
+        "ms.vss-pipelines.run-state-changed-event"   # Using as Temporary Deployment Event
     }
 
     signature   = shared.create_unique_id(msg)
